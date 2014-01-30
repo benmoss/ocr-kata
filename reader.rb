@@ -4,11 +4,19 @@ class Reader
   end
 
   def value
-    secret_decoder[@lines.join]
+    SECRET_DECODER_RING.fetch(@lines.join)
   end
 
-  private
-  def secret_decoder
-    {" _ | ||_|   " => 0}
-  end
+  SECRET_DECODER_RING = {
+    " _ | ||_|   " => 0,
+    "     |  |   " => 1,
+    " _  _||_    " => 2,
+    " _  _| _|   " => 3,
+    "   |_|  |   " => 4,
+    " _ |_  _|   " => 5,
+    " _ |_ |_|   " => 6,
+    " _   |  |   " => 7,
+    " _ |_||_|   " => 8,
+    " _ |_| _|   " => 9
+  }
 end
