@@ -1,22 +1,15 @@
 class FileWriter
-  def initialize(path:, readers:)
-    @path = path
-    @readers = readers
+  def initialize(file:, number:)
+    @file = file
+    @number = number
   end
 
   def write
-    File.open(@path, "w") do |f|
-      illegible = false
-      @readers.each.with_index do |reader, index|
-        begin
-          f.write(reader.value)
-        rescue Reader::IllegibleAccountNumber
-          illegible = true
-          f.write("?")
-        end
-      end
-
-      f.write(" ILL") if illegible
+    @file.write(@number.value)
+    if @number.illegible?
+      @file.write(" ILL")
+    elsif !@number.valid?
+      @file.write(" ERR")
     end
   end
 end

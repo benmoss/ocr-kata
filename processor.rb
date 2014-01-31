@@ -1,5 +1,6 @@
 require_relative 'reader'
 require_relative 'file_writer'
+require_relative 'account_number'
 
 class Processor
   def initialize(scanned_file)
@@ -15,7 +16,10 @@ class Processor
       })
     }
 
-    writer = FileWriter.new(path: output_path, readers: readers)
-    writer.write
+    number = AccountNumber.new(readers)
+
+    File.open(output_path, "w") do |f|
+      FileWriter.new(file: f, number: number).write
+    end
   end
 end

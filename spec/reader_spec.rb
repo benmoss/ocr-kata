@@ -9,9 +9,9 @@ describe Reader do
     reader.value.should == 0
   end
 
-  it "throws an IllegibleAccountNumber when the number is not recognized" do
+  it "returns a '?' when gives an unrecognized number" do
     reader = Reader.new(["hi"])
-    expect { reader.value }.to raise_error Reader::IllegibleAccountNumber
+    expect(reader.value).to eql("?")
   end
 end
 

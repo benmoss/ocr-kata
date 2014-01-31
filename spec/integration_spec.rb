@@ -22,6 +22,11 @@ describe "reading scanned account number files" do
     expect(process(file)).to eql("49006771? ILL")
   end
 
+  it "handles invalid account numbers" do
+    file = File.open("spec/invalid.txt")
+    expect(process(file)).to eql("664371495 ERR")
+  end
+
   after do
     File.delete("result.txt")
   end
