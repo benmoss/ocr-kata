@@ -11,6 +11,18 @@ class Reader
     value == ILLEGIBLE_VALUE
   end
 
+  def possible_corrections
+    Enumerator.new { |yielder|
+      @lines.join.chars.each.with_index { |c, i|
+        attempt = @lines.join.chars.dup
+        [" ", "_", "-", "|"].each do |variation|
+          attempt[i] = variation
+          yielder.yield(Reader.new(attempt))
+        end
+      }
+    }
+  end
+
   SECRET_DECODER_RING = {
     " _ "+
     "| |"+
