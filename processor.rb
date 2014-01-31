@@ -1,4 +1,5 @@
 require_relative 'reader'
+require_relative 'file_writer'
 
 class Processor
   def initialize(scanned_file)
@@ -14,10 +15,7 @@ class Processor
       })
     }
 
-    File.open(output_path, "w") do |f|
-      readers.map(&:value).each.with_index do |value, index|
-        f.write(value)
-      end
-    end
+    writer = FileWriter.new(path: output_path, readers: readers)
+    writer.write
   end
 end

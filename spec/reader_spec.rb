@@ -8,5 +8,10 @@ describe Reader do
                          %w(\ \ \ )])
     reader.value.should == 0
   end
+
+  it "throws an IllegibleAccountNumber when the number is not recognized" do
+    reader = Reader.new(["hi"])
+    expect { reader.value }.to raise_error Reader::IllegibleAccountNumber
+  end
 end
 

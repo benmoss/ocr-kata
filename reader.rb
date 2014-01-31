@@ -4,7 +4,7 @@ class Reader
   end
 
   def value
-    SECRET_DECODER_RING.fetch(@lines.join)
+    SECRET_DECODER_RING.fetch(@lines.join) { raise IllegibleAccountNumber }
   end
 
   SECRET_DECODER_RING = {
@@ -19,4 +19,5 @@ class Reader
     " _ |_||_|   " => 8,
     " _ |_| _|   " => 9
   }
+  class IllegibleAccountNumber < Exception; end
 end
