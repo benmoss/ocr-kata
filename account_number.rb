@@ -1,16 +1,14 @@
-require_relative 'account_number_corrector'
-
 class AccountNumber
-  def initialize(readers)
-    self.readers = readers
+  def initialize(components)
+    self.components = components
   end
 
   def value
-    if illegible? || invalid?
-      self.readers = AccountNumberCorrector.new(readers).corrected
-    end
+    components.map(&:value).join
+  end
 
-    readers.map(&:value).join
+  def has_error?
+    !errors.nil?
   end
 
   def errors
@@ -26,13 +24,13 @@ class AccountNumber
   end
 
   def valid?
-    readers.reverse.each.with_index.inject(0) { |acc, (reader, i)|
-      acc + reader.value * (i + 1)
+    components.reverse.each.with_index.inject(0) { |acc, (component, i)|
+      acc + component.value * (i + 1)
     } % 11 == 0
   end
 
   def illegible?
-    readers.any?(&:illegible?)
+    components.any?(&:illegible?)
   end
 
   def invalid?
@@ -40,5 +38,5 @@ class AccountNumber
   end
 
   private
-  attr_accessor :readers
+  attr_accessor :components
 end

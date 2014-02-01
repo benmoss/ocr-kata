@@ -1,23 +1,33 @@
 require_relative 'account_number'
 
 class AccountNumberCorrector
-  def initialize(readers)
-    @readers = readers
+  def initialize(components)
+    self.components = components
   end
 
-  def corrected
-    corrected = @readers
-    @readers.each.with_index do |reader, i|
-      reader.possible_corrections.each do |correction|
-        new_readers = @readers.dup
-        new_readers[i] = correction
-        attempt = AccountNumber.new(new_readers)
+  def value
+    return result.value if result
+
+    components.each.with_index do |component, i|
+      component.possible_corrections.each do |correction|
+        new_components = components.dup
+        new_components[i] = correction
+        attempt = AccountNumber.new(new_components)
         if attempt.legible? && attempt.valid?
-          corrected = new_readers
+          self.result = attempt
           break
         end
       end
     end
-    corrected
+
+    self.result = AccountNumber.new(components) unless result
+    result.value
   end
+
+  def errors
+    result.errors
+  end
+
+  private
+  attr_accessor :components, :result
 end

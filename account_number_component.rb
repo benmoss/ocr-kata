@@ -1,4 +1,4 @@
-class Reader
+class AccountNumberComponent
   def initialize(lines)
     @lines = lines
   end
@@ -17,7 +17,7 @@ class Reader
         attempt = @lines.join.chars.dup
         [" ", "_", "-", "|"].each do |variation|
           attempt[i] = variation
-          yielder.yield(Reader.new(attempt))
+          yielder.yield(self.class.new(attempt))
         end
       }
     }
