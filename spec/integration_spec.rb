@@ -32,6 +32,11 @@ describe "reading scanned account number files" do
     expect(process(file)).to eql("711111111")
   end
 
+  it "tells you when it cannot determine a correction" do
+    file = File.open("spec/ambiguous.txt")
+    expect(process(file)).to eql("888888888 AMB ['888886888', '888888880', '888888988']")
+  end
+
   after do
     File.delete("result.txt")
   end

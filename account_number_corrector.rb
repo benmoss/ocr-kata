@@ -3,31 +3,40 @@ require_relative 'account_number'
 class AccountNumberCorrector
   def initialize(components)
     self.components = components
+    self.original = AccountNumber.new(components)
+    self.corrections = []
   end
 
   def value
-    return result.value if result
-
     components.each.with_index do |component, i|
       component.possible_corrections.each do |correction|
         new_components = components.dup
         new_components[i] = correction
         attempt = AccountNumber.new(new_components)
         if attempt.legible? && attempt.valid?
-          self.result = attempt
+          corrections << attempt
           break
         end
       end
     end
 
-    self.result = AccountNumber.new(components) unless result
-    result.value
+    if corrections.length == 1
+      corrections.first.value
+    else
+      original.value
+    end
   end
 
   def errors
-    result.errors
+    if corrections.length == 0
+      original.errors
+    elsif corrections.length == 1
+      nil
+    else
+      "AMB [#{corrections.map(&:value).sort.map {|n| "'#{n}'" }.join(", ")}]"
+    end
   end
 
   private
-  attr_accessor :components, :result
+  attr_accessor :components, :corrections, :original
 end
