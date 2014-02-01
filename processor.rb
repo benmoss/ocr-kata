@@ -19,7 +19,7 @@ class Processor
     number = AccountNumber.new(readers)
 
     File.open(output_path, "w") do |f|
-      FileWriter.new(file: f, number: number).write
+      FileWriter.new(file: f, account: number).write
     end
   end
 end

@@ -1,15 +1,16 @@
 class FileWriter
-  def initialize(file:, number:)
-    @file = file
-    @number = number
+  def initialize(file:, account:)
+    self.file = file
+    self.account = account
   end
 
   def write
-    @file.write(@number.value)
-    if @number.illegible?
-      @file.write(" ILL")
-    elsif !@number.valid?
-      @file.write(" ERR")
+    file.write(account.value)
+    if account.errors
+      file.write(" #{account.errors}")
     end
   end
+
+  private
+  attr_accessor :account, :file
 end
