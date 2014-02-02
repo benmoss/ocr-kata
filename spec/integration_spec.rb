@@ -35,6 +35,14 @@ describe "reading scanned account number files" do
   it "tells you when it cannot determine a correction" do
     file = File.open("spec/ambiguous.txt")
     expect(process(file)).to eql("888888888 AMB ['888886888', '888888880', '888888988']")
+    file = File.open("spec/ambiguous1.txt")
+    expect(process(file)).to eql("555555555 AMB ['555655555', '559555555']")
+    file = File.open("spec/ambiguous2.txt")
+    expect(process(file)).to eql("666666666 AMB ['666566666', '686666666']")
+    file = File.open("spec/ambiguous3.txt")
+    expect(process(file)).to eql("999999999 AMB ['899999999', '993999999', '999959999']")
+    file = File.open("spec/ambiguous4.txt")
+    expect(process(file)).to eql("490067715 AMB ['490067115', '490067719', '490867715']")
   end
 
   after do
