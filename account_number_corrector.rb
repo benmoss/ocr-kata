@@ -15,7 +15,6 @@ class AccountNumberCorrector
         attempt = AccountNumber.new(new_components)
         if attempt.legible? && attempt.valid?
           corrections << attempt
-          break
         end
       end
     end

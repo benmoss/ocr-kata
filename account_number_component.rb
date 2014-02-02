@@ -1,10 +1,10 @@
 class AccountNumberComponent
   def initialize(lines)
-    @lines = lines
+    self.string = lines.join
   end
 
   def value
-    SECRET_DECODER_RING.fetch(@lines.join, ILLEGIBLE_VALUE)
+    SECRET_DECODER_RING.fetch(string, ILLEGIBLE_VALUE)
   end
 
   def illegible?
@@ -13,9 +13,9 @@ class AccountNumberComponent
 
   def possible_corrections
     Enumerator.new { |yielder|
-      @lines.join.chars.each.with_index { |c, i|
-        attempt = @lines.join.chars.dup
+      string.chars.each.with_index { |c, i|
         [" ", "_", "-", "|"].each do |variation|
+          attempt = string.chars.dup
           attempt[i] = variation
           yielder.yield(self.class.new(attempt))
         end
@@ -67,4 +67,7 @@ class AccountNumberComponent
   }
 
   ILLEGIBLE_VALUE = "?"
+
+  private
+  attr_accessor :string
 end
