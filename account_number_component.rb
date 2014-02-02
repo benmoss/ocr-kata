@@ -14,7 +14,8 @@ class AccountNumberComponent
   def possible_corrections
     Enumerator.new { |yielder|
       string.chars.each.with_index { |c, i|
-        [" ", "_", "-", "|"].each do |variation|
+        [" ", "_", "|"].each do |variation|
+          next if variation == c
           attempt = string.chars.dup
           attempt[i] = variation
           yielder.yield(self.class.new(attempt))
